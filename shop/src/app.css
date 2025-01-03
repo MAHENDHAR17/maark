@@ -1,0 +1,25 @@
+.mahi{
+    height: 90vh;
+    width: 80%;
+    background-color: aqua;
+    margin: auto;
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    overflow: auto
+    
+} 
+.mahi::-webkit-scrollbar{
+    display: none;
+}
+.mahi .prod{
+    height: 300px;
+    width: 98%;
+    margin-bottom: 5px;
+    background-color: rgb(235, 235, 241);
+}
+.mahi .prod .image{
+    height: 70%;
+}
+.mahi .prod .det{
+    height: 30%;
+}
