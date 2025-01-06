@@ -17,7 +17,7 @@ async function main() {
 
 
 app.post('/post',async(req,res) => {
-  console.log(JSON.stringify(req.body))
+  console.log(JSON.stringify(req.body));
   if(!(req.body.name && req.body.price && req.body.image)){
       res.status(400).send("fill ")}
 
@@ -37,17 +37,17 @@ app.post('/post',async(req,res) => {
 
 
 app.delete('/delete',async(req,res) => {
-  const {name}=req.body;
+  
 
-   if(!name){
-res.status(500).send('fill')}
+   if(!(req.body.name)){
+return res.status(500).send('fill')}
 try{
- const prod = await prod.findOneAndDelete({ name });
- if(!prod){
+ const product = await prod.findOneAndDelete( (req.body.name));
+ if(!product){
   return res.status(404).send('user not found');
  }
 
- res.status(200).send('user deleted successfully');
+res.status(200).send('user deleted successfully');
 }catch (error) {
   console.error('error deleting user',error.message);
   res.status(500).send('server error');
@@ -55,4 +55,5 @@ try{
 
 })
 app.listen(8888,()=>{
+  console.log('hello world');
 })
