@@ -17,4 +17,5 @@ const prodSchema = new mongoose.Schema({
     },
 })
 
-module.exports=mongoose.model("prod",prodSchema)
+let prod=mongoose.model('prod',prodSchema)
+export default prod;
