@@ -3,6 +3,7 @@ const app=express();
 import mongoose from 'mongoose';
 import prod from './models/product.js';
 import cors from 'cors'
+import multer from 'multer'
 
 
 app.use(express.json());
@@ -14,6 +15,15 @@ async function main() {
   await mongoose.connect('mongodb+srv://sh:sh@cluster0.iznuy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0',console.log('db connected'));
  
 }
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, './uploads'); // Specify folder for uploads
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + path.extname(file.originalname)); // File naming convention
+  }
+})
+const upload = multer({ storage });
 
 
 app.post('/post',async(req,res) => {
@@ -51,6 +61,26 @@ res.status(200).send('user deleted successfully');
 }catch (error) {
   console.error('error deleting user',error.message);
   res.status(500).send('server error');
+}
+})
+
+
+app.put('/put',async(req,res) => {
+  if(!(req.body.name)){
+    res.status(400) .send('full');
+  }
+try{
+  const productupdate = await prod.findOneAndUpdate(
+    { name:req.body.name},
+    {name:req.body.newname,price:req.body.price,image:req.body.image},
+    {new:true}
+  )
+    if(!(productupdate)){
+      res.status(400).send('user not found')}
+      res.status(200).send('updated')
+}catch(error){
+  console.error('error in update')
+  res.status(500).send('server error')
 }
 
 })

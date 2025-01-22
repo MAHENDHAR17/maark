@@ -1,0 +1,16 @@
+.prodbox{  
+
+    height:200px;
+    width: 200px;
+    background-color: aquamarine;
+    text-align: center;
+    border-radius: 16px;
+    
+}
+
+img{
+    height: 60%;
+    width: 95%;
+    margin: auto;
+    border-radius: 10px;
+}
