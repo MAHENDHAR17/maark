@@ -31,17 +31,21 @@ const Home = () => {
          
         })
       console.log('response from server:', response.data);
-    setproduct(prevproducts => [---prevproducts, response.data.products]);
+    setproduct((prevproducts) => [...prevproducts, response.data.products]);
+
+    Name.current.value = '';
+    Price.current.value = '';
+    Image.current.value = '';
   } catch(error) {
     console.error('error submitting from:',error);
   }
   }
   useEffect(()=>{
-    axios.get('http://localhost:8888/products/')
-    .then(response => {
+    axios.get('http://localhost:8888/products')
+    .then((response) => {
       setproduct(response.data);
     })
-    .catch(error =>{
+    .catch((error) =>{
       console.log('there was an error',error)
     });
   },[]);
@@ -50,7 +54,7 @@ const Home = () => {
   return (
     <div>
       <div className='mahi'>
-        {products.map((mahi)=><Prod key={mahi.id}mahi={mahi}/>)}
+        {products.map((mahi)=>(<Prod key={mahi.id}mahi={mahi}/>))}
         
       </div>
      <div className='add'>  

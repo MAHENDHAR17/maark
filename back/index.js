@@ -7,7 +7,8 @@ import multer from 'multer';
 
 
 app.use(express.json());
-app.use('publick/images',express.static('upload'));
+app.use(cors());
+app.use('publick/images',express.static('public/images'));
 
 main().catch(err => console.log(err));
 
@@ -29,7 +30,10 @@ const upload = multer({ storage });
 app.post('/post',upload.single('image'),(req,res) => {
       try{
         const{name,price}=req.body;
-        const image=req.file? req.file.filename:null
+        const image=req.file? req.file.filename:null;
+        if(!name || !price || !image){
+          return res.status(400).send("please provide all the contant")
+        }
 
        new prod({
         name:req.body.name,
@@ -45,47 +49,47 @@ app.post('/post',upload.single('image'),(req,res) => {
  
 
 
-app.delete('/delete',async(req,res) => {
-   if(!(req.body.name)){
-return res.status(500).send('fill')}
+// app.delete('/delete',async(req,res) => {
+//    if(!(req.body.name)){
+// return res.status(500).send('fill')}
+// try{
+//  const product = await prod.findOneAndDelete( (req.body.name));
+//  if(!product){
+//   return res.status(404).send('user not found');
+//  }
+
+// res.status(200).send('user deleted successfully');
+// }catch (error) {
+//   console.error('error deleting user',error.message);
+//   res.status(500).send('server error');
+// }
+// });
+
+
+// app.put('/put',async(req,res) => {
+//   if(!(req.body.name)){
+//     res.status(400) .send('full');
+//   }
+// try{
+//   const productupdate = await prod.findOneAndUpdate(
+//     { name:req.body.name},
+//     {name:req.body.newname,price:req.body.price,image:req.body.image},
+//     {new:true}
+//   );
+//     if(!(productupdate)){
+//       res.status(400).send('user not found')}
+//       res.status(200).send('updated')
+// }catch(error){
+//   console.error('error in update')
+//   res.status(500).send('server error')
+// }
+// })                               //localhost:8888/post
+
+
+app.get('/product',async(req,res)=>{     //http://localhost:8888/product
 try{
- const product = await prod.findOneAndDelete( (req.body.name));
- if(!product){
-  return res.status(404).send('user not found');
- }
-
-res.status(200).send('user deleted successfully');
-}catch (error) {
-  console.error('error deleting user',error.message);
-  res.status(500).send('server error');
-}
-});
-
-
-app.put('/put',async(req,res) => {
-  if(!(req.body.name)){
-    res.status(400) .send('full');
-  }
-try{
-  const productupdate = await prod.findOneAndUpdate(
-    { name:req.body.name},
-    {name:req.body.newname,price:req.body.price,image:req.body.image},
-    {new:true}
-  );
-    if(!(productupdate)){
-      res.status(400).send('user not found')}
-      res.status(200).send('updated')
-}catch(error){
-  console.error('error in update')
-  res.status(500).send('server error')
-}
-})                               //localhost:8888/post
-
-
-app.get('product/',async(req,res)=>{     //http://localhost:8888/product/
-try{
-  const prod = await prod.find();
-  res.json(prod);}
+  const products = await prod.find();
+  res.json(products);}
   catch (error){
   res.status(500).json({message: 'error etching products'});
 }
