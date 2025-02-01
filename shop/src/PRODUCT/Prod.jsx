@@ -3,9 +3,6 @@ import "./prod.css"
 
 const Prod = ({mahi}) => {
 
-  let Image=useRef;
-  let Name=useRef;
-  let Price=useRef
   return (
     <div>
       <div className='prodbox'>

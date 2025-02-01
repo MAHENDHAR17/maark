@@ -1,39 +1,68 @@
-import React, { useRef } from 'react'
+import React, { useRef, useState, useEffect } from 'react'
 import Prod from '../product/Prod'
 import "./home.css"
+import axios from 'axios';
 
 const Home = () => {
 
-    let product=[{
-     NAME:"MAHI",
-     IMAGE:'https://assets.telegraphindia.com/telegraph/367ec959-2736-4def-92e3-a68b2304a8e7.jpg',
-     PRICE:280  },
-     {
-        NAME:"HEMA",
-        IMAGE:"https://images.pexels.com/photos/371589/pexels-photo-371589.jpeg?cs=srgb&dl=clouds-conifer-daylight-371589.jpg&fm=jpg",
-        PRICE:300
-     },
-      {NAME:"HEMA",
-        IMAGE:"https://images.pexels.com/photos/371589/pexels-photo-371589.jpeg?cs=srgb&dl=clouds-conifer-daylight-371589.jpg&fm=jpg",
-        PRICE:300
-     }   
-    ]
+
+  let Name=useRef();
+  let Price=useRef();
+  let Image=useRef();
+
+  const [products,setproduct]=useState([]);
+
+
+
+   const mahi= async() =>{
+    if(Name.current.value === ""||Price.current.value === ""||Image.current.file.length === 0){
+      console.log("fill all the boxes")
+      return;
+     }
+       const formdata = new FormData();
+       formdata.append("NAME",Name.current.value)
+       formdata.append("PRICE",Price.current.value)
+       formdata.append("IMAGE",Image.current.file[0])
+       try{
+        const response = await axios.post('http://localhost:8888/post',formdata,{
+          headers:{
+            'content-type': 'multipart/from-data',
+          },
+         
+        })
+      console.log('response from server:', response.data);
+    setproduct(prevproducts => [---prevproducts, response.data.products]);
+  } catch(error) {
+    console.error('error submitting from:',error);
+  }
+  }
+  useEffect(()=>{
+    axios.get('http://localhost:8888/products/')
+    .then(response => {
+      setproduct(response.data);
+    })
+    .catch(error =>{
+      console.log('there was an error',error)
+    });
+  },[]);
+    
     
   return (
     <div>
       <div className='mahi'>
-        {product.map((mahi)=><Prod mahi={mahi}/>)}
+        {products.map((mahi)=><Prod key={mahi.id}mahi={mahi}/>)}
         
       </div>
      <div className='add'>  
-        <span><input type="file" placeholder='add'/>
-         <input type="text" placeholder='name' />
-         <input type="price" placeholder='price' /></span>
-        <button>sub</button>
+        <span><input type="file" placeholder='add'ref={Image}/>
+         <input type="text" placeholder='name' ref={Name}/>
+
+         <input type="number" placeholder='price' ref={Price}/></span>
+        <button onClick={mahi}>sub</button>
         <button>reload</button>
      </div>
     </div>
   )
-}
+};
 
-export default Home
+export default Home;
