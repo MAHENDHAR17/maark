@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react'
-import Prod from '../product/Prod'
+import Prod from '../PRODUCT/Prod'
 import "./home.css"
 import axios from 'axios';
 
@@ -10,23 +10,23 @@ const Home = () => {
   let Price=useRef();
   let Image=useRef();
 
-  const [products,setproduct]=useState([]);
+  const [products, setproduct] = useState([]);
 
 
 
-   const mahi= async() =>{
-    if(Name.current.value === ""||Price.current.value === ""||Image.current.file.length === 0){
+   const sub= async() =>{
+    if(Name.current.value === ""||Price.current.value === 0 ||Image.current.files.length === 0) {
       console.log("fill all the boxes")
       return;
      }
        const formdata = new FormData();
        formdata.append("NAME",Name.current.value)
        formdata.append("PRICE",Price.current.value)
-       formdata.append("IMAGE",Image.current.file[0])
+       formdata.append("IMAGE",Image.current.files[0])
        try{
         const response = await axios.post('http://localhost:8888/post',formdata,{
           headers:{
-            'content-type': 'multipart/from-data',
+            'content-type': 'multipart/form-data',
           },
          
         })
@@ -35,13 +35,13 @@ const Home = () => {
 
     Name.current.value = '';
     Price.current.value = '';
-    Image.current.value = '';
+    Image.current.value = null;
   } catch(error) {
     console.error('error submitting from:',error);
   }
   }
   useEffect(()=>{
-    axios.get('http://localhost:8888/products')
+    axios.get('http://localhost:8888/product')
     .then((response) => {
       setproduct(response.data);
     })
@@ -54,7 +54,7 @@ const Home = () => {
   return (
     <div>
       <div className='mahi'>
-        {products.map((mahi)=>(<Prod key={mahi.id}mahi={mahi}/>))}
+        {products.map((product)=>(<Prod key={product._id}mahi={product}/>))}
         
       </div>
      <div className='add'>  
@@ -62,7 +62,7 @@ const Home = () => {
          <input type="text" placeholder='name' ref={Name}/>
 
          <input type="number" placeholder='price' ref={Price}/></span>
-        <button onClick={mahi}>sub</button>
+        <button onClick={sub}>sub</button>
         <button>reload</button>
      </div>
     </div>

@@ -7,10 +7,10 @@ const Prod = ({mahi}) => {
     <div>
       <div className='prodbox'>
 
-        <span className='span1'>{mahi.NAME}  </span>
-        <img src={mahi.IMAGE} alt=""  />
+        <span className='span1'>{mahi.name}  </span>
+        <img src={`http://localhost:8888/public/${mahi.image}`} alt=""  />
         <span>price :</span>
-        <span>{mahi.PRICE}</span>
+        <span>{mahi.price}</span>
       </div>
     </div>
   )
