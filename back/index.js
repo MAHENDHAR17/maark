@@ -7,9 +7,10 @@ import multer from 'multer';
 import path from 'path';
 
 
+
 app.use(express.json());
 app.use(cors());
-app.use('/public',express.static('publick'));
+app.use('/publick',express.static('publick'));
 
 main().catch(err => console.log(err));
 
@@ -41,7 +42,7 @@ app.post('/post',upload.single('IMAGE'),async(req,res) => {   //http://localhost
         image:req.file.path
     })
     await newProduct.save();
-    res.json({product:newProduct});
+    res.json({products:newProduct});
   } catch (err){
     console.error(err);
     res.status(500).send("server error");
