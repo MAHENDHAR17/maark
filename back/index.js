@@ -49,13 +49,34 @@ app.post('/post',upload.single('IMAGE'),async(req,res) => {   //http://localhost
   }
 });
  
+app.delete('/delete/:id', async (req, res) => {  // http://localhost:8888/delete/:id
+  try {
+    const id = req.params.id;
+    const deletedProduct = await prod.findByIdAndDelete(id);
+
+    if (!deletedProduct) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product deleted successfully!' });
+  } catch (error) {
+    console.error('Error deleting product:', error);
+    res.status(500).json({ message: 'Error deleting product. Please try again.' });
+  }
+});
 
 
-// app.delete('/delete',async(req,res) => {
-//    if(!(req.body.name)){
+
+
+
+
+
+
+
+  //    if(!(req.body._id)){
 // return res.status(500).send('fill')}
 // try{
-//  const product = await prod.findOneAndDelete( (req.body.name));
+//  const product = await prod.findByIdAndDelete( (_id));
 //  if(!product){
 //   return res.status(404).send('user not found');
 //  }

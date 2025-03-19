@@ -40,6 +40,21 @@ const Home = () => {
     console.error('error submitting from:',error);
   }
   }
+
+  const dele = async (_id) => {
+    
+    try {
+      const response = await axios.delete(`http://localhost:8888/delete/${_id}`)
+      console.log('Product deleted:', response.data)
+
+      // Remove the deleted product from the state
+      setproduct((prevProducts) => prevProd.filter((prod) => prod._id !== _id))
+    } catch (error) {
+      console.error('Error deleting product:', error)
+    }
+  }
+
+
   useEffect(()=>{
     axios.get('http://localhost:8888/product')
     .then((response) => {
@@ -49,17 +64,21 @@ const Home = () => {
       console.log('there was an error',error)
     });
   },[]);
+
+
+
+  
     
     
   return (
     <div>
       <div className='mahi'>
-        {products.map((product)=>(<Prod key={product._id}mahi={product}/>))}
-        
+        {products.map((product)=>(<Prod key={product._id}mahi={product}  onDelete={dele}/>))}
+
       </div>
      <div className='add'>  
         <span><input type="file" placeholder='add'ref={Image}/>
-         <input type="text" placeholder='name' ref={Name}/>
+         <input type="text" placeholder='Name' ref={Name}/>
 
          <input type="number" placeholder='price' ref={Price}/></span>
         <button onClick={sub}>sub</button>
