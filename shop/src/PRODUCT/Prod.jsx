@@ -1,6 +1,5 @@
 import React, { useRef } from 'react'
 import "./prod.css"
-import axios from 'axios';
 
 const Prod = ({mahi,onDelete}) => {
   

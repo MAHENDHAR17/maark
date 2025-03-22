@@ -3,6 +3,8 @@ import Prod from '../PRODUCT/Prod'
 import "./home.css"
 import axios from 'axios';
 
+
+
 const Home = () => {
 
 
@@ -11,6 +13,7 @@ const Home = () => {
   let Image=useRef();
 
   const [products, setproduct] = useState([]);
+
 
 
 
@@ -46,13 +49,12 @@ const Home = () => {
     try {
       const response = await axios.delete(`http://localhost:8888/delete/${_id}`)
       console.log('Product deleted:', response.data)
-
       // Remove the deleted product from the state
       setproduct((prevProducts) => prevProd.filter((prod) => prod._id !== _id))
     } catch (error) {
       console.error('Error deleting product:', error)
     }
-  }
+  };
 
 
   useEffect(()=>{
